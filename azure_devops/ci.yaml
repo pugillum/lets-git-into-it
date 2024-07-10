@@ -1,0 +1,21 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-22.04
+
+steps:
+  - checkout: self
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: "3.10"
+    displayName: "Use Python 3.10"
+
+  - script: pip install -r requirements.txt
+    displayName: Install dependencies
+
+  - script: pre-commit run --all-files
+    displayName: Run linters
+
+  - script: pytest test_main.py
+    displayName: Run test

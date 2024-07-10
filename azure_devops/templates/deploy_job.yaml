@@ -1,0 +1,21 @@
+parameters:
+  - name: environment
+    type: string
+
+stages:
+  - stage: deploy_stuff
+    displayName: Deploy Stuff
+    jobs:
+      - job: deploy_stuff
+        displayName: Deploy Stuff
+        pool:
+          vmImage: ubuntu-22.04
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "3.10"
+            displayName: "Use Python 3.10"
+
+          - script: |
+              echo "Deploying to ${{ parameters.environment }}"
+            displayName: Deploy

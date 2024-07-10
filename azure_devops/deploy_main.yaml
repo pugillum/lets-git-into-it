@@ -1,0 +1,21 @@
+trigger:
+  branches:
+    include:
+      - main
+      - "refs/tags/release-*"
+
+pool:
+  vmImage: ubuntu-22.04
+
+stages:
+  # deploy to devd on merge to main
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+      - template: templates/deploy_job.yaml
+        parameters:
+          environment: dev
+
+  # deploy to prdd on tag
+  - ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/release-') }}:
+      - template: templates/deploy_job.yaml
+        parameters:
+          environment: prd
